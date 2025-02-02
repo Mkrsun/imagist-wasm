@@ -1,0 +1,35 @@
+# 🚀 Node.js / NPM
+node_modules/
+package-lock.json
+*.log
+npm-debug.log*
+
+# 🚀 Rust / Cargo
+target/
+Cargo.lock
+*.rs.bk
+
+# 🚀 WebAssembly (wasm-pack)
+pkg/
+*.wasm
+*.ts
+*.js
+*.d.ts
+*.wat
+*.c
+*.h
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+.wasm-pack/
+
+# 🚀 IDE / Editor
+.vscode/
+.idea/
+*.iml
+
+# 🚀 OS / Archivos temporales
+.DS_Store
+Thumbs.db

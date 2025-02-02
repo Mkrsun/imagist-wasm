@@ -1,0 +1,21 @@
+{
+  "name": "imagist-wasm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": ["pkg", "README.md"], 
+  "keywords": ["wasm", "rust", "image-processing", "webassembly"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tuusuario/imagist-wasm"
+  },
+  "author": "Mkrsun",
+  "license": "MIT",
+  "description": "Procesamiento de imágenes en WebAssembly (WASM) con Rust",
+  "readme": "README.md",
+  "dependencies": {
+    "wasm-pack": "^0.13.1"
+  }
+}
