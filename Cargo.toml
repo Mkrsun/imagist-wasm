@@ -13,3 +13,6 @@ libheif-rs = "1.1.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
+
+[package.metadata.cargo-alias]
+build-wasm = "sh build.sh"

@@ -184,13 +184,53 @@ fs.writeFileSync("output.jpg", output);
 
 ## 🛠️ Construcción Manual
 
-Si deseas construir este paquete desde código fuente:
+Si deseas construir este paquete desde el código fuente, sigue estos pasos:
+
+### 1️⃣ Clonar el repositorio y entrar en la carpeta del proyecto
 ```sh
-wasm-pack build --target nodejs
+git clone https://github.com/tu-usuario/imagist-wasm.git
+cd imagist-wasm
+```
+### 2️⃣ Compilar para Node.js y Web
+Ejecuta el siguiente comando para compilar el paquete para Node.js y WebAssembly:
+
+```sh
+cargo build-wasm
+```
+
+Esto generará los paquetes en:
+
+📂 pkg-node/ → Para Node.js
+📂 pkg-web/ → Para Web y React Native
+
+### 3️⃣ Enlazar localmente para pruebas
+Si deseas probar el paquete antes de publicarlo en NPM:
+
+```sh
+cd pkg-node
 npm link
 ```
 
----
+Luego, en otro proyecto donde quieras usarlo:
+
+
+```sh
+npm link imagist-wasm
+```
+
+### 4️⃣ Publicar en NPM
+Para publicar una nueva versión en NPM:
+
+```sh
+npm publish --access public
+```
+
+Si es una actualización menor o parche:
+
+```sh
+npm version patch
+npm publish
+```
 
 ## 📄 Licencia
 **MIT © 2025 - imagist-wasm**
