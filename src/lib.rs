@@ -3,15 +3,19 @@ use image::{DynamicImage, ImageEncoder, ExtendedColorType};
 use image::codecs::{jpeg::JpegEncoder, png::PngEncoder, webp::WebPEncoder, bmp::BmpEncoder};
 use rayon::prelude::*;
 use std::io::Cursor;
+
+#[cfg(not(target_arch = "wasm32"))]
 use libheif_rs::{HeifContext, LibHeif, ColorSpace, RgbChroma};
 
 #[wasm_bindgen]
 pub fn resize_image(image_data: &[u8], max_width: u32, max_height: u32, format: &str) -> Vec<u8> {
     let img = match format {
+        #[cfg(not(target_arch = "wasm32"))]
         "heic" => match decode_heic(image_data) {
             Ok(img) => img,
             Err(e) => panic!("Error al decodificar HEIC: {}", e),
         },
+        "heic" => panic!("HEIC no está soportado en WebAssembly"),
         _ => match image::load_from_memory(image_data) {
             Ok(img) => img,
             Err(_) => panic!("Formato no soportado: {}", format),
@@ -56,7 +60,8 @@ pub fn resize_image(image_data: &[u8], max_width: u32, max_height: u32, format: 
     buf
 }
 
-// 📝 Función corregida para decodificar HEIC con `libheif-rs v1.1.0`
+
+#[cfg(not(target_arch = "wasm32"))]
 fn decode_heic(image_data: &[u8]) -> Result<DynamicImage, String> {
     let lib_heif = LibHeif::new();
     let ctx = HeifContext::read_from_bytes(image_data)
