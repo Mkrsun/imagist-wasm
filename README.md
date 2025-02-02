@@ -69,6 +69,68 @@ async function processImage(imageUri) {
 }
 ```
 
+## 📤 Ejemplo: Subir imagen al servidor en Expo (React Native + Typescript)
+```typescript
+import * as FileSystem from "expo-file-system";
+import { resize_image } from "imagist-wasm"; // Importa el módulo
+
+export const uploadFile = async (imageUri: string, description: string) => {
+  try {
+    // 📂 Verifica si el archivo existe
+    const fileInfo = await FileSystem.getInfoAsync(imageUri);
+    if (!fileInfo.exists) {
+      throw new Error("El archivo no existe en la ruta especificada.");
+    }
+
+    // 📥 Leer imagen en base64
+    const imageBase64 = await FileSystem.readAsStringAsync(imageUri, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+
+    // 🔄 Convertir base64 a buffer
+    const imageBuffer = Buffer.from(imageBase64, "base64");
+
+    // 📏 Redimensionar imagen a 1920x1080 y convertir a JPEG
+    const optimizedImage = resize_image(imageBuffer, 1920, 1080, "jpeg");
+
+    // 💾 Guardar imagen optimizada en un nuevo archivo
+    const newUri = `${FileSystem.cacheDirectory}optimized.jpg`;
+    await FileSystem.writeAsStringAsync(
+      newUri,
+      Buffer.from(optimizedImage).toString("base64"),
+      { encoding: FileSystem.EncodingType.Base64 }
+    );
+
+    console.log("✅ Imagen optimizada guardada en:", newUri);
+
+    // 🔄 Subir la imagen optimizada al backend
+    const uploadUrl = `${API_BASE_URL}/resources`; // Cambia esta URL por la del backend
+    const response = await FileSystem.uploadAsync(uploadUrl, newUri, {
+      httpMethod: "POST",
+      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+      fieldName: "file",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      parameters: {
+        description: description, // Agregas el campo `description`
+      },
+    });
+
+    if (response.status === 200 || response.status === 201) {
+      console.log("✅ Archivo subido exitosamente:", response.body);
+      const body = JSON.parse(response.body);
+      const { resourceId } = body;
+      return resourceId;
+    } else {
+      console.error("❌ Error al subir el archivo:", response.status);
+    }
+  } catch (error) {
+    console.error("❌ Error al subir el archivo:", error.message);
+  }
+};
+```
+
 ---
 
 ## 📌 Formatos Soportados
