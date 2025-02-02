@@ -15,7 +15,6 @@ pub fn resize_image(image_data: &[u8], max_width: u32, max_height: u32, format: 
             Ok(img) => img,
             Err(e) => panic!("Error al decodificar HEIC: {}", e),
         },
-        "heic" => panic!("HEIC no está soportado en WebAssembly"),
         _ => match image::load_from_memory(image_data) {
             Ok(img) => img,
             Err(_) => panic!("Formato no soportado: {}", format),
