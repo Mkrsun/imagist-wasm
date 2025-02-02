@@ -1,12 +1,20 @@
 {
   "name": "imagist-wasm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "files": ["pkg", "README.md"], 
-  "keywords": ["wasm", "rust", "image-processing", "webassembly"],
+  "files": [
+    "pkg",
+    "README.md"
+  ],
+  "keywords": [
+    "wasm",
+    "rust",
+    "image-processing",
+    "webassembly"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Mkrsun/imagist-wasm"
