@@ -6,4 +6,3 @@ src/
 test_images/
 build.sh
 .gitignore
-node_modules
