@@ -87,16 +87,20 @@ fs.writeFileSync("output.jpg", output);
 
 Si deseas construir este paquete desde el código fuente, sigue estos pasos:
 
+### Requisitos previos
+Es necesario tener previamente instalado rust en tu sistema junto con su package manager y build system llamado "cargo".
+
 ### 1️⃣ Clonar el repositorio y entrar en la carpeta del proyecto
 ```sh
 git clone https://github.com/tu-usuario/imagist-wasm.git
 cd imagist-wasm
 ```
+
 ### 2️⃣ Compilar para Node.js
 Ejecuta el siguiente comando para compilar el paquete para Node.js y WebAssembly:
 
 ```sh
-cargo build-wasm
+npm run build
 ```
 
 ### 3️⃣ Enlazar localmente para pruebas
