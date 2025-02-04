@@ -8,12 +8,9 @@
   },
   "files": [
     "pkg-node",
-    "pkg-web",
     "README.md"
   ],
   "main": "pkg-node/imagist_wasm.js",
-  "browser": "pkg-web/imagist_wasm.js",
-  "types": "pkg-web/imagist_wasm.d.ts",
   "keywords": [
     "wasm",
     "rust",
