@@ -12,11 +12,6 @@ Optimiza imágenes con alta velocidad y bajo consumo de recursos. Compatible con
 npm install imagist-wasm
 ```
 
-### Para React Native con Expo:
-```sh
-expo install imagist-wasm
-```
-
 ---
 
 ## 🚀 Uso en Node.js
