@@ -39,100 +39,6 @@ console.log("✅ Imagen procesada y guardada exitosamente.");
 
 ---
 
-## 📱 Uso en React Native con Expo
-
-```javascript
-import { resize_image } from "imagist-wasm";
-import * as FileSystem from "expo-file-system";
-
-async function processImage(imageUri) {
-  try {
-    // 📥 Leer la imagen desde la URI del dispositivo
-    const imageData = await FileSystem.readAsStringAsync(imageUri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
-    // 📏 Redimensionar a 1080p y convertir a WebP
-    const resizedImage = resize_image(Buffer.from(imageData, "base64"), 1920, 1080, "webp");
-
-    // 💾 Guardar la imagen optimizada
-    const newUri = `${FileSystem.cacheDirectory}resized.webp`;
-    await FileSystem.writeAsStringAsync(newUri, Buffer.from(resizedImage).toString("base64"), {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
-    console.log("✅ Imagen optimizada guardada en:", newUri);
-    return newUri;
-  } catch (error) {
-    console.error("❌ Error procesando la imagen:", error);
-  }
-}
-```
-
-## 📤 Ejemplo: Subir imagen al servidor en Expo (React Native + Typescript)
-```typescript
-import * as FileSystem from "expo-file-system";
-import { resize_image } from "imagist-wasm"; // Importa el módulo
-
-export const uploadFile = async (imageUri: string, description: string) => {
-  try {
-    // 📂 Verifica si el archivo existe
-    const fileInfo = await FileSystem.getInfoAsync(imageUri);
-    if (!fileInfo.exists) {
-      throw new Error("El archivo no existe en la ruta especificada.");
-    }
-
-    // 📥 Leer imagen en base64
-    const imageBase64 = await FileSystem.readAsStringAsync(imageUri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
-    // 🔄 Convertir base64 a buffer
-    const imageBuffer = Buffer.from(imageBase64, "base64");
-
-    // 📏 Redimensionar imagen a 1920x1080 y convertir a JPEG
-    const optimizedImage = resize_image(imageBuffer, 1920, 1080, "jpeg");
-
-    // 💾 Guardar imagen optimizada en un nuevo archivo
-    const newUri = `${FileSystem.cacheDirectory}optimized.jpg`;
-    await FileSystem.writeAsStringAsync(
-      newUri,
-      Buffer.from(optimizedImage).toString("base64"),
-      { encoding: FileSystem.EncodingType.Base64 }
-    );
-
-    console.log("✅ Imagen optimizada guardada en:", newUri);
-
-    // 🔄 Subir la imagen optimizada al backend
-    const uploadUrl = `${API_BASE_URL}/resources`; // Cambia esta URL por la del backend
-    const response = await FileSystem.uploadAsync(uploadUrl, newUri, {
-      httpMethod: "POST",
-      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-      fieldName: "file",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      parameters: {
-        description: description, // Agregas el campo `description`
-      },
-    });
-
-    if (response.status === 200 || response.status === 201) {
-      console.log("✅ Archivo subido exitosamente:", response.body);
-      const body = JSON.parse(response.body);
-      const { resourceId } = body;
-      return resourceId;
-    } else {
-      console.error("❌ Error al subir el archivo:", response.status);
-    }
-  } catch (error) {
-    console.error("❌ Error al subir el archivo:", error.message);
-  }
-};
-```
-
----
-
 ## 📌 Formatos Soportados
 
 | Formato | Entrada | Salida |
@@ -191,17 +97,12 @@ Si deseas construir este paquete desde el código fuente, sigue estos pasos:
 git clone https://github.com/tu-usuario/imagist-wasm.git
 cd imagist-wasm
 ```
-### 2️⃣ Compilar para Node.js y Web
+### 2️⃣ Compilar para Node.js
 Ejecuta el siguiente comando para compilar el paquete para Node.js y WebAssembly:
 
 ```sh
 cargo build-wasm
 ```
-
-Esto generará los paquetes en:
-
-📂 pkg-node/ → Para Node.js
-📂 pkg-web/ → Para Web y React Native
 
 ### 3️⃣ Enlazar localmente para pruebas
 Si deseas probar el paquete antes de publicarlo en NPM:
